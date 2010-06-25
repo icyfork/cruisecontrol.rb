@@ -1,6 +1,6 @@
 class BuildsController < ApplicationController
   caches_page :drop_down
-  
+
   def show
     render :text => 'Project not specified', :status => 404 and return unless params[:project]
     @project = Project.find(params[:project])
@@ -8,7 +8,7 @@ class BuildsController < ApplicationController
 
     if params[:build]
       @build = @project.find_build(params[:build])
-      render :text => "Build #{params[:build].inspect} not found", :status => 404 and return if @build.nil? 
+      render :text => "Build #{params[:build].inspect} not found", :status => 404 and return if @build.nil?
     else
       @build = @project.last_build
       render :action => 'no_builds_yet' and return if @build.nil?
@@ -25,7 +25,7 @@ class BuildsController < ApplicationController
     @builds_for_dropdown = @project.builds.reverse[30..-1]
     render :layout => false
   end
-  
+
   def artifact
     render :text => 'Project not specified', :status => 404 and return unless params[:project]
     render :text => 'Build not specified', :status => 404 and return unless params[:build]
@@ -51,7 +51,7 @@ class BuildsController < ApplicationController
       render_not_found
     end
   end
-  
+
   private
   def get_mime_type(name)
     case name.downcase
@@ -67,7 +67,7 @@ class BuildsController < ApplicationController
       'image/jpeg'
     when /\.png$/
       'image/png'
-    when /\.zip$/
+    when /\.(zip|apk)$/
       'application/zip'
     else
       'text/plain'
