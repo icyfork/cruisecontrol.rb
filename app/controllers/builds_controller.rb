@@ -54,24 +54,7 @@ class BuildsController < ApplicationController
 
   private
   def get_mime_type(name)
-    case name.downcase
-    when /\.html$/
-      'text/html'
-    when /\.js$/
-      'text/javascript'
-    when /\.css$/
-      'text/css'
-    when /\.gif$/
-      'image/gif'
-    when /(\.jpg|\.jpeg)$/
-      'image/jpeg'
-    when /\.png$/
-      'image/png'
-    when /\.(zip|apk)$/
-      'application/zip'
-    else
-      'text/plain'
-    end
+    Rack::Mime::mime_type(File.extname(name).downcase, 'text/plain')
   end
 
 end
