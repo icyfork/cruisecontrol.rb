@@ -1,0 +1,24 @@
+<style>
+  ul {list-style-type: none;}
+</style>
+<% if @files.any? -%>
+  <ul>
+  <% prev_day = nil %>
+  <% @files.each do |file| -%>
+    <%=
+      now_day = file[:mtime].strftime("%Y-%m-%d")
+      if prev_day != now_day
+        prev_day = now_day
+        "<li>#{now_day}</li>\n"
+      end
+    %>
+    <li>
+      <%= "&nbsp;"* 10 << (link_to h(file[:name]), :controller => "latest", :action => file[:name]) %>
+    </li>
+  <% end -%>
+  </ul>
+<% else -%>
+  <h3 class="error">
+    No file found in <%=h @source %>
+  </h3>
+<% end -%>
