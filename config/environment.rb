@@ -69,4 +69,4 @@ FileUtils.rm_rf RAILS_ROOT + "/public/documentation"
 BuilderPlugin.load_all
 
 require 'rack/mime'
-Rack::Mime::MIME_TYPES.merge!({".apk" => "application/zip"})
+Rack::Mime::MIME_TYPES.merge!({".apk" => "application/vnd.android.package-archive"})
