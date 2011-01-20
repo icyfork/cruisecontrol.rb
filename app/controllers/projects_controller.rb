@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  
+
   verify :params => "id", :only => [:show, :build, :code],
          :render => { :text => "Project not specified",
                       :status => 404 }
@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
                       :status => 404 }
   def index
     @projects = Project.all
-    
+
     respond_to do |format|
       format.html
       format.js { render :action => 'index_js' }
@@ -22,7 +22,7 @@ class ProjectsController < ApplicationController
     render :text => "Project #{params[:id].inspect} not found", :status => 404 and return unless @project
 
     respond_to do |format|
-      format.html { redirect_to :controller => "builds", :action => "show", :project => @project }
+      format.html { redirect_to(:controller => "builds", :action => "show", :project => @project, :onlypath => false) }
       format.rss { render :action => 'show_rss', :layout => false }
     end
   end
@@ -38,20 +38,20 @@ class ProjectsController < ApplicationController
 
     respond_to { |format| format.js { render :action => 'index_js' } }
   end
-  
+
   def code
     if Configuration.disable_code_browsing
       render :text => "Code browsing disabled" and return
     end
 
     @project = Project.find(params[:id])
-    render :text => "Project #{params[:id].inspect} not found", :status => 404 and return unless @project 
+    render :text => "Project #{params[:id].inspect} not found", :status => 404 and return unless @project
 
     path = File.join(@project.path, 'work', params[:path])
     @line = params[:line].to_i if params[:line]
-    
+
     if File.directory?(path)
-      render :text => 'Viewing of source directories is not supported yet', :status => 500 
+      render :text => 'Viewing of source directories is not supported yet', :status => 500
     elsif File.file?(path)
       @content = File.read(path)
     else
