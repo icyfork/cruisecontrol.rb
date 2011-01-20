@@ -22,7 +22,7 @@ class ProjectsController < ApplicationController
     render :text => "Project #{params[:id].inspect} not found", :status => 404 and return unless @project
 
     respond_to do |format|
-      format.html { redirect_to(:controller => "builds", :action => "show", :project => @project, :only_path => false) }
+      format.html { redirect_to("#{Configuration.dashboard_url}/builds/show/#{@project.name}") }
       format.rss { render :action => 'show_rss', :layout => false }
     end
   end
